@@ -1,0 +1,71 @@
+# === JAVA / SPRING ===
+/target/
+*.class
+*.jar
+*.war
+*.iml
+/.idea/
+*.iws
+*.ipr
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### env ###
+.env
+.env.*
+
+### Maven ###
+.mvn
+mvnw.cmd
+
+### Docker ###
+**/docker-compose.override.yml
+**/docker-compose.dev.yaml
+
+# === LOGS ===
+logs/
+*.log
+*.out
+
+# === DATABASE ===
+*.h2.db
+*.mv.db
+
+# === VSCODE / JETBRAINS ===
+.vscode/
+.idea/
+*.swp
+
+# === TEMP ===
+*.tmp
+*.bak
+*.old
+
+# === SYSTEM FILES ===
+.DS_Store
+Thumbs.db
