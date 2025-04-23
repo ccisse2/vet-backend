@@ -9,28 +9,30 @@ import lombok.Data;
 
 @Data
 public class PersonnelDto {
+
+    @NotNull(message = "L'id ne peut pas être nul.")
     private UUID id;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "Le nom ne peut pas être vide.")
+    @Size(max = 50, message = "Le nom ne peut pas dépasser 50 caractères.")
     private String nom;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "Le prénom ne peut pas être vide.")
+    @Size(max = 50, message = "Le prénom ne peut pas dépasser 50 caractères.")
     private String prenom;
 
-    @Past
+    @Past(message = "La date de naissance doit être dans le passé.")
     private LocalDate dateNaissance;
 
-    @NotBlank
-    @Pattern(regexp = "\\+?[0-9. ()-]{7,25}", message = "Numéro de téléphone invalide")
+    @NotBlank(message = "Le numéro de téléphone ne peut pas être vide.")
+    @Pattern(regexp = "\\+?[0-9. ()-]{7,25}", message = "Numéro de téléphone invalide.")
     private String telephone;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "L'email ne peut pas être vide.")
+    @Email(message = "L'email doit être valide.")
     private String email;
 
-    @NotNull
+    @NotNull(message = "La fonction ne peut pas être nulle.")
     private Fonction fonction;
 
     private UUID adresseId;
