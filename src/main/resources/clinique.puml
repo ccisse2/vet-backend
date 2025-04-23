@@ -1,0 +1,149 @@
+
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam classAttributeIconSize 10
+skinparam nodesep 50
+skinparam ranksep 150
+
+' --- Classes de base ---
+class Adresse {
+  -id: UUID
+  -rue: String
+  -codePostal: String
+  -ville: String
+}
+
+class Mutuelle {
+  -id: UUID
+  -nom: String
+  -type: String
+  -numeroContrat: String
+}
+
+' --- Package Personnes ---
+package "Utilisateurs" {
+  abstract class Utilisateur {
+    -id: UUID
+    -nom: String
+    -prenom: String
+    -dateNaissance: LocalDate
+    -telephone: String
+    -email: String
+  }
+
+  class Personnel extends Utilisateur {
+    -motDePasse: String
+    -fonction: Fonction
+    -isAdmin: Boolean
+  }
+
+  class Client extends Utilisateur {
+    -remarque: String
+    -archive: Boolean
+  }
+
+  enum Fonction {
+      SECRETAIRE,
+      VETERINAIRE,
+      ASSISTANT,
+      DIRECTEUR
+  }
+}
+
+' --- Package Animaux ---
+package "Animaux" {
+  class Animal {
+    -id: UUID
+    -nom: String
+    -sexe: String
+    -couleur: String
+    -dateNaissance: LocalDate
+    -tatouage: String
+    -archive: Boolean
+    -proprietaire: Client
+  }
+
+  class Race {
+    -id: UUID
+    -espece: String
+    -nomRace: String
+  }
+
+  class DossierMedical {
+    -id: UUID
+  }
+
+  class NoteMedicale {
+    -id: UUID
+    -date: LocalDate
+    -contenu: String
+    -auteur: Personnel
+  }
+}
+
+' --- Package Consultations ---
+package "Consultations" {
+  class RendezVous {
+    -id: UUID
+    -dateHeure: LocalDateTime
+    -duree: int
+    -type: TypeRdv
+    -remarque: String
+    -statut: StatutRdv
+  }
+
+  class Consultation {
+    -id: UUID
+    -resume: String
+    -date: LocalDateTime
+    -prescriptions: List<String>
+    -personnel: Personnel
+    -rendezVous: RendezVous
+  }
+
+  class Facture {
+    -id: UUID
+    -montant: double
+    -payee: Boolean
+    -dateEmission: LocalDateTime
+    -modePaiement: String
+    -datePaiement: LocalDateTime
+  }
+
+  enum TypeRdv {
+    CONSULTATION
+    VACCINATION
+    CHIRURGIE
+    CASTRATION
+  }
+
+  enum StatutRdv {
+    PLANIFIE
+    ANNULE
+    EFFECTUE
+  }
+}
+
+' --- Relations générales ---
+Utilisateur "1" *-up- "1" Adresse : habite à >
+Client "1" *-- "0..1" Mutuelle : bénéficie d'une >
+Client "1" *-up- "1..*" Animal : possède >
+Animal "0..*" --> "1" Race : appartient à >
+Animal "1" *-- "0..1" DossierMedical : dossier médical >
+Animal "1" *-- "0..*" RendezVous : historique >
+DossierMedical "1" *-- "0..*" NoteMedicale : contient >
+NoteMedicale "1" --> "1" Personnel : rédigée par >
+
+' --- Relations consultation ---
+RendezVous "1" -up-> "1" Animal : concerne >
+RendezVous "1..*" --> "1" Client : demandé par >
+RendezVous "1..*" --> "1" Personnel : vétérinaire >
+RendezVous "0..*" --> "1" Personnel : assistant >
+RendezVous "1" -up-> "0..1" Consultation : aboutit à >
+Consultation "1..*" --> "1" Animal : concerne >
+Consultation "1" --> "1" Personnel : réalisée par >
+Consultation "1" *-- "0..1" Facture : génère >
+Facture "1" --> "1" Client : payée par >
+
+@enduml

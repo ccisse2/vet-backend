@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+' couleurs facultatives
+skinparam usecase {
+  BackgroundColor #FDF6E3
+  BorderColor Black
+}
+
+actor "Client" as Client
+actor "Secrétaire" as Secretaire
+actor "Vétérinaire" as Veterinaire
+actor "Assistant\nvétérinaire" as Assistant
+
+rectangle "Système de gestion des rendez-vous\net consultations" {
+
+  usecase "Prendre un\nrendez-vous" as UC1
+  usecase "Gérer l'agenda\ndes rendez-vous" as UC2
+  usecase "Recevoir le planning\nde consultation" as UC3
+  usecase "Préparer la salle\nde consultation" as UC4
+  usecase "Consulter\nun animal" as UC5
+  usecase "Mettre à jour\nle dossier médical" as UC6
+  usecase "Établir\nune facture" as UC7
+}
+
+' Associations droites (pas de courbes ni ortho)
+Client --> UC1
+Secretaire --> UC1
+Secretaire --> UC2
+Veterinaire --> UC3
+Assistant --> UC4
+Veterinaire --> UC5
+Veterinaire --> UC6
+Secretaire --> UC7
+
+' Relations fonctionnelles
+UC2 --> UC1 : <<include>>
+UC5 --> UC4 : <<include>>
+UC5 --> UC6 : <<include>>
+UC7 ..> UC5 : <<extend>>
+
+@enduml
